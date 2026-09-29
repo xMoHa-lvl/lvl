@@ -1,4 +1,4 @@
-herehttpx
+httpx
 pycryptodome
 google-play-scraper
 protobuf-decoder
