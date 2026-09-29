@@ -3,3 +3,5 @@ pycryptodome
 google-play-scraper
 protobuf-decoder
 requests
+protobuf
+aiohttp
