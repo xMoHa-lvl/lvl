@@ -34,8 +34,9 @@ import thunderFF_pb2
 from dashboard_server import bot_state, start_web_dashboard
 
 # ==================== CONFIGURATION ====================
+# ==================== CONFIGURATION ====================
 WEB_HOST = "0.0.0.0"
-WEB_PORT = 20335
+WEB_PORT = int(os.environ.get("PORT", 20335))
 ACCOUNTS_FILE = "accounts.json"
 TOKEN_CACHE_FILE = "token_cache.json"
 DEVICES_FILE = "devices.json"  # 🔥 NEW: Persistent device storage
