@@ -1,0 +1,16 @@
+[
+  {
+    "username": "admin",
+    "role": "admin",
+    "password_hash": "pbkdf2$200000$daff4c00db4419a137065320d0a74152$035a7c1c7bbaa0653f2f43493a26da88b9071ff64942a96d3af16c211f991866",
+    "exp_limit": 0,
+    "created_at": "2026-10-02 12:24:56"
+  },
+  {
+    "username": "hi1",
+    "role": "user",
+    "password_hash": "pbkdf2$200000$9fdfb18d9811522e4587015f9e739a0d$df5abba6b1c1db60c755f9926335ea895f83b2da3830fa6ed44055608528682d",
+    "exp_limit": 50000000,
+    "created_at": "2026-10-02 12:26:39"
+  }
+]
