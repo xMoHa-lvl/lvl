@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TEAM 84FF | FreeFire Level Up Bot Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+:root {
+    /* Modern Dark Theme Palette */
+    --bg-base: #121217;
+    --bg-surface: #202026;
+    --bg-panel: rgba(32, 32, 38, 0.78);
+
+    --border: rgba(255, 255, 255, 0.11);
+    --border-hover: rgba(255, 255, 255, 0.2);
+
+    --accent-main: #7479f6;
+    --accent-main-hover: #6368f1;
+    --accent-glow: rgba(116, 121, 246, 0.32);
+
+    --success: #1fc98f;
+    --success-bg: rgba(31, 201, 143, 0.13);
+
+    --warning: #fbaa1c;
+    --warning-bg: rgba(251, 170, 28, 0.13);
+
+    --danger: #f45a5a;
+    --danger-bg: rgba(244, 90, 90, 0.13);
+
+    --info: #2bb6f1;
+
+    --text-main: #f8fafc;
+    --text-muted: #a8b6ca;
+    --text-dim: #7d8ca5;
+
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+
+    --r-sm: 8px;
+    --r-md: 12px;
+    --r-lg: 16px;
+    --r-xl: 24px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    min-height: 100vh;
+    background: var(--bg-base);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* BACKGROUND ANIMATION */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(circle at 15% 50%, rgba(116, 121, 246, 0.14), transparent 32%),
+        radial-gradient(circle at 85% 30%, rgba(31, 201, 143, 0.09), transparent 32%);
+    pointer-events: none;
+    animation: ambientPulse 15s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+#app {
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.shell {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TOPBAR */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--r-lg);
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-md);
+}
+
+.brand-block { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-md);
+    background: linear-gradient(135deg, var(--accent-main), var(--info));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.brand-name-main {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+    white-space: nowrap;
+}
+
+.brand-name-main span { color: var(--text-muted); font-weight: 600; }
+
+.brand-tag {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.top-actions { display: flex; gap: 8px; }
+
+.btn {
+    padding: 9px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-hover);
+}
+
+.btn-primary {
+    background: var(--accent-main);
+    border-color: var(--accent-main);
+    color: #fff;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    background: var(--accent-main-hover);
+    border-color: var(--accent-main-hover);
+}
+
+/* STATS GRID */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.stat-card {
+    padding: 16px;
+    border-radius: var(--r-lg);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-ic {
+    width: 32px; height: 32px;
+    border-radius: var(--r-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.stat-card.blue .stat-ic { color: var(--info); background: rgba(14, 165, 233, 0.1); }
+.stat-card.violet .stat-ic { color: var(--accent-main); background: var(--accent-glow); }
+.stat-card.lime .stat-ic { color: var(--success); background: var(--success-bg); }
+.stat-card.pink .stat-ic { color: var(--danger); background: var(--danger-bg); }
+.stat-card.amber .stat-ic { color: var(--warning); background: var(--warning-bg); }
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-foot {
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: auto;
+}
+
+/* WORKSPACE */
+.workspace { margin-top: 16px; }
+
+.panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panel-title h3 {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+}
+
+.panel-title i { color: var(--accent-main); }
+
+.chip {
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--border);
+    color: var(--text-main);
+}
+
+/* CONTROLS & SEARCH */
+.controls {
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.12);
+}
+
+.search { position: relative; width: 100%; }
+.search i {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 13px;
+}
+.search input {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-size: 13px;
+    outline: none;
+    transition: 0.2s;
+}
+.search input:focus {
+    border-color: var(--accent-main);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.filters {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-surface);
+    padding: 3px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    overflow-x: auto;
+}
+
+.filter {
+    flex: 1;
+    border: 0; background: transparent; color: var(--text-muted);
+    padding: 6px 8px; border-radius: 6px; cursor: pointer;
+    font-size: 10px; font-weight: 700; transition: 0.2s;
+    text-align: center; white-space: nowrap;
+}
+.filter.active {
+    background: var(--bg-panel); color: var(--text-main); box-shadow: var(--shadow-sm);
+}
+
+/* ACCOUNT CARDS */
+.accounts-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 12px;
+    align-content: start;
+    padding: 16px;
+}
+
+.accounts-wrap::-webkit-scrollbar { width: 4px; }
+
+.account-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 14px;
+    transition: all 0.2s ease;
+}
+
+.acc-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 8px; margin-bottom: 12px;
+}
+
+.acc-id { display: flex; gap: 10px; align-items: center; min-width: 0; }
+
+.acc-avatar {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--bg-panel), var(--bg-base));
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--text-muted);
+    position: relative; flex-shrink: 0;
+}
+
+.acc-level {
+    position: absolute; right: -5px; bottom: -5px;
+    background: var(--accent-main); color: #fff;
+    font-size: 9px; font-weight: 800; padding: 1px 4px;
+    border-radius: 4px; border: 2px solid var(--bg-surface);
+}
+
+.acc-info { min-width: 0; }
+.acc-name {
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.acc-region {
+    font-size: 9px; padding: 1px 4px; border-radius: 3px;
+    background: var(--border); color: var(--text-muted); flex-shrink: 0;
+}
+
+.acc-uid {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim);
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+
+.copy-btn {
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; transition: 0.2s; padding: 2px;
+}
+.copy-btn:hover { color: var(--text-main); }
+
+/* STATUS PILLS */
+.status-pill {
+    padding: 4px 8px; border-radius: 100px;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.status-pill .sdot { width: 5px; height: 5px; border-radius: 50%; }
+
+.status-online { background: var(--success-bg); color: var(--success); }
+.status-online .sdot { background: var(--success); }
+
+.status-match { background: var(--accent-glow); color: var(--accent-main); }
+.status-match .sdot { background: var(--accent-main); animation: dotPulse 1.5s infinite; }
+
+.status-paused { background: var(--warning-bg); color: var(--warning); }
+.status-paused .sdot { background: var(--warning); }
+
+.status-error { background: var(--danger-bg); color: var(--danger); }
+.status-error .sdot { background: var(--danger); }
+
+@keyframes dotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* METRICS */
+.acc-metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    margin-bottom: 12px;
+}
+.metric-box {
+    background: rgba(0,0,0,0.16); padding: 8px; border-radius: var(--r-sm);
+    text-align: center;
+}
+.metric-box span {
+    display: block; font-size: 9px; color: var(--text-dim); font-weight: 600; margin-bottom: 2px;
+    text-transform: uppercase;
+}
+.metric-box strong {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+}
+.metric-box.gain strong { color: var(--success); }
+
+/* PROGRESS BAR */
+.progress-block {
+    background: rgba(0,0,0,0.16); padding: 10px; border-radius: var(--r-sm);
+    margin-bottom: 12px;
+}
+.progress-top {
+    display: flex; justify-content: space-between; font-size: 10px;
+    color: var(--text-muted); font-weight: 600; margin-bottom: 6px;
+}
+.progress-top b { color: var(--text-main); }
+.progress-track {
+    height: 5px; background: var(--bg-base); border-radius: 10px; overflow: hidden;
+}
+.progress-fill {
+    height: 100%; background: var(--accent-main);
+    transition: width 0.5s ease; border-radius: 10px;
+}
+.progress-bot {
+    display: flex; justify-content: space-between; font-size: 9px;
+    color: var(--text-dim); margin-top: 5px; font-family: 'JetBrains Mono', monospace;
+}
+
+/* ACTIONS */
+.acc-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--border); gap: 8px;
+}
+.acc-time { font-size: 10px; color: var(--text-dim); display: flex; gap: 4px; align-items: center; min-width: 0; }
+.acc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.act-btn {
+    width: 30px; height: 30px; border-radius: var(--r-sm); border: 1px solid var(--border);
+    background: var(--bg-base); color: var(--text-muted); cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+.act-btn:hover { background: var(--border-hover); color: var(--text-main); }
+.act-btn.danger:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+
+/* PAUSE / RESUME BUTTON */
+.pause-btn {
+    padding: 0 12px; height: 30px; border-radius: var(--r-sm);
+    border: 1px solid var(--warning); background: var(--warning-bg); color: var(--warning);
+    font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.pause-btn:hover { background: var(--warning); color: #121217; }
+.pause-btn.resume { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.pause-btn.resume:hover { background: var(--success); color: #121217; }
+
+/* MODALS & TOASTS */
+.modal-bg {
+    position: fixed; inset: 0; z-index: 5000; display: none;
+    align-items: center; justify-content: center; padding: 16px;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+}
+.modal-bg.active { display: flex; }
+.modal-card {
+    background: var(--bg-surface); width: 100%; max-width: 440px;
+    padding: 20px; border-radius: var(--r-xl); border: 1px solid var(--border);
+    animation: fadeUp 0.3s ease; box-shadow: var(--shadow-lg);
+}
+.modal-head { display: flex; justify-content: space-between; margin-bottom: 18px; align-items: center; }
+.modal-head h3 { font-size: 16px; font-weight: 700; }
+.modal-close { background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+
+.field-block { margin-bottom: 14px; }
+.field-block label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.field-input, .field-select, .field-textarea {
+    width: 100%; padding: 10px 12px; border-radius: var(--r-sm);
+    background: var(--bg-base); border: 1px solid var(--border); color: #fff;
+    font-size: 13px; outline: none; transition: 0.2s;
+}
+.field-textarea { min-height: 80px; resize: vertical; }
+.field-input:focus, .field-textarea:focus, .field-select:focus { border-color: var(--accent-main); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+.toast-wrap { position: fixed; top: 16px; right: 16px; left: 16px; z-index: 10000; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+@media (min-width: 600px) { .toast-wrap { left: auto; max-width: 380px; } }
+.toast {
+    padding: 12px 16px; border-radius: var(--r-md); background: var(--bg-surface);
+    border: 1px solid var(--border); box-shadow: var(--shadow-lg); color: #fff;
+    font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 10px;
+    animation: toastIn 0.3s ease forwards; pointer-events: auto;
+}
+.toast.success i { color: var(--success); }
+.toast.error i { color: var(--danger); }
+.toast.info i { color: var(--info); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+
+/* EMPTY STATE */
+.empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 16px; color: var(--text-muted); }
+.empty-state i { font-size: 28px; margin-bottom: 12px; opacity: 0.5; }
+.empty-state p { font-size: 13px; margin-bottom: 16px; }
+
+/* EFFECTS */
+.stat-card, .account-card, .panel, .topbar { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease; }
+
+.stat-card:hover, .account-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--accent-glow);
+}
+
+.stat-ic { transition: transform 0.3s ease; }
+.stat-card:hover .stat-ic { transform: scale(1.12) rotate(-6deg); }
+
+.btn:hover, .pause-btn:hover { transform: translateY(-1px); }
+.btn:active, .pause-btn:active, .act-btn:active, .filter:active { transform: scale(0.96); }
+.act-btn:hover { transform: translateY(-1px) scale(1.06); }
+.act-btn { transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+
+.brand-mark { animation: markGlow 3.5s ease-in-out infinite; }
+@keyframes markGlow {
+    0%, 100% { box-shadow: 0 4px 15px var(--accent-glow); }
+    50% { box-shadow: 0 4px 26px rgba(116, 121, 246, 0.55); }
+}
+
+.progress-fill { position: relative; overflow: hidden; }
+.progress-fill::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: translateX(-100%);
+    animation: barShine 2.8s ease-in-out infinite;
+}
+@keyframes barShine { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+
+.stat-card { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stat-card:nth-child(2) { animation-delay: 0.06s; }
+.stat-card:nth-child(3) { animation-delay: 0.12s; }
+.stat-card:nth-child(4) { animation-delay: 0.18s; }
+.stat-card:nth-child(5) { animation-delay: 0.24s; }
+@keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+.status-pill.status-match { animation: matchGlow 2s ease-in-out infinite; }
+@keyframes matchGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(116, 121, 246, 0); }
+    50% { box-shadow: 0 0 12px 1px rgba(116, 121, 246, 0.45); }
+}
+
+.metric-box.gain strong { text-shadow: 0 0 10px rgba(31, 201, 143, 0.35); }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* USER CHIP / LIMIT */
+.user-chip {
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: var(--r-sm);
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap;
+}
+.user-chip i { color: var(--accent-main); }
+.user-chip small { color: var(--text-muted); font-weight: 600; font-size: 10px; padding-left: 7px; border-left: 1px solid var(--border); }
+a.btn { text-decoration: none; }
+.status-limit { background: var(--danger-bg); color: var(--danger); }
+.status-limit .sdot { background: var(--danger); }
+.pause-btn:disabled, .pause-btn:disabled:hover {
+    opacity: 0.55; cursor: not-allowed; transform: none;
+    background: var(--danger-bg); border-color: var(--danger); color: var(--danger);
+}
+
+/* LOGIN OVERLAY */
+.login-overlay {
+    position: fixed; inset: 0; z-index: 9000; display: none;
+    align-items: center; justify-content: center; padding: 16px;
+    background: rgba(0,0,0,0.78); backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.login-overlay.active { display: flex; }
+.login-card {
+    background: var(--bg-surface); width: 100%; max-width: 400px;
+    padding: 28px 22px 22px; border-radius: var(--r-xl); border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg); text-align: center; animation: fadeUp 0.3s ease;
+}
+.login-icon {
+    width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.login-icon.loading { border: 4px solid var(--border); border-top-color: var(--accent-main); animation: spin 0.9s linear infinite; }
+.login-icon.ok { background: var(--success-bg); color: var(--success); }
+.login-icon.fail { background: var(--danger-bg); color: var(--danger); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.login-title { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+.login-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.login-uid {
+    display: inline-block; margin-top: 6px; padding: 5px 10px; border-radius: var(--r-sm);
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-main);
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.login-reason { margin-top: 12px; font-size: 12px; color: var(--danger); }
+.login-info {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 16px 0 4px; text-align: left;
+}
+.login-info .metric-box { text-align: left; }
+.login-info .metric-box strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.login-card .btn { margin-top: 18px; width: 100%; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .shell { padding: 12px; }
+    .topbar { padding: 10px 14px; }
+    .brand-name-main { font-size: 14px; }
+    .brand-mark { width: 36px; height: 36px; font-size: 15px; }
+
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-card:last-child { grid-column: span 2; }
+
+    .mobile-hide { display: none !important; }
+
+    .controls { padding: 10px 12px; }
+    .accounts-wrap { padding: 12px; grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+    <div class="toast-wrap" id="toast-wrap"></div>
+    <div class="shell">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="brand-block">
+                <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <div class="brand-name-main">TEAM 84FF <span class="mobile-hide">/ LEVEL UP BOT</span></div>
+                    <div class="brand-tag mobile-hide">Safe Multi-Match Engine</div>
+                </div>
+            </div>
+            <div class="top-actions">
+                <span class="user-chip mobile-hide" id="user-chip" style="display:none"></span>
+                <a class="btn mobile-hide" id="admin-link" href="/admin" style="display:none"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+                <button class="btn" onclick="manualRefresh()">
+                    <i class="fa-solid fa-rotate"></i> <span class="mobile-hide">Refresh</span>
+                </button>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fa-solid fa-plus"></i> <span class="mobile-hide">Add Account</span>
+                </button>
+                <button class="btn" onclick="logout()" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> <span class="mobile-hide">Logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- STATS -->
+        <section class="stats">
+            <div class="stat-card blue">
+                <div class="stat-ic"><i class="fa-solid fa-users"></i></div>
+                <span class="stat-label">Total Accounts</span>
+                <div class="stat-value" id="stat-accounts">0</div>
+                <div class="stat-foot" id="stat-online">0 Active</div>
+            </div>
+            <div class="stat-card violet">
+                <div class="stat-ic"><i class="fa-solid fa-rocket"></i></div>
+                <span class="stat-label">Active Matches</span>
+                <div class="stat-value" id="stat-active-matches">0</div>
+                <div class="stat-foot" id="stat-in-match">0 in match</div>
+            </div>
+            <div class="stat-card lime">
+                <div class="stat-ic"><i class="fa-solid fa-gamepad"></i></div>
+                <span class="stat-label">Completed</span>
+                <div class="stat-value" id="stat-completed">0</div>
+                <div class="stat-foot" id="stat-per-hour">~0 / hr</div>
+            </div>
+            <div class="stat-card pink">
+                <div class="stat-ic"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <span class="stat-label">EXP Gained</span>
+                <div class="stat-value" id="stat-exp">+0</div>
+                <div class="stat-foot" id="stat-exp-rate">~0 EXP/hr</div>
+            </div>
+            <div class="stat-card amber">
+                <div class="stat-ic"><i class="fa-solid fa-clock"></i></div>
+                <span class="stat-label">Uptime</span>
+                <div class="stat-value" id="stat-uptime">00:00:00</div>
+                <div class="stat-foot">Bot uptime</div>
+            </div>
+        </section>
+
+        <!-- WORKSPACE -->
+        <section class="workspace">
+            <div class="panel" id="tab-accounts">
+                <div class="panel-head">
+                    <div class="panel-title">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <h3>Accounts <span class="chip" id="badge-count">0</span></h3>
+                    </div>
+                    <button class="btn" id="btn-pause-all" onclick="togglePauseAll()">
+                        <i class="fa-solid fa-pause"></i> Pause All
+                    </button>
+                </div>
+
+                <div class="controls">
+                    <div class="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="account-search" type="text" placeholder="Search nickname or UID..." oninput="filterAccounts()">
+                    </div>
+                    <div class="filters">
+                        <button class="filter active" onclick="setFilter('all',this)">ALL</button>
+                        <button class="filter" onclick="setFilter('in_match',this)">MATCH</button>
+                        <button class="filter" onclick="setFilter('online',this)">ONLINE</button>
+                        <button class="filter" onclick="setFilter('paused',this)">PAUSED</button>
+                    </div>
+                </div>
+
+                <div class="accounts-wrap" id="accounts-container">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <p>Loading accounts...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ADD MODAL -->
+    <div class="modal-bg" id="add-modal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3><i class="fa-solid fa-user-plus" style="margin-right:6px; color:var(--accent-main)"></i> Add Account</h3>
+                <button class="modal-close" onclick="closeAddModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitAddAccount(event)">
+                <div class="field-block">
+                    <label>Login Type</label>
+                    <select class="field-select" id="acc-type" onchange="toggleFormType()">
+                        <option value="guest">Guest Account (UID + Password)</option>
+                        <option value="token">Access Token</option>
+                    </select>
+                </div>
+                <div id="guest-inputs">
+                    <div class="field-block">
+                        <label>Guest UID</label>
+                        <input id="acc-uid" class="field-input" type="text" placeholder="Enter UID" autocomplete="off">
+                    </div>
+                    <div class="field-block">
+                        <label>Guest Password</label>
+                        <input id="acc-password" class="field-input" type="password" placeholder="Enter password" autocomplete="off">
+                    </div>
+                </div>
+                <div id="token-inputs" style="display:none">
+                    <div class="field-block">
+                        <label>Access Token</label>
+                        <textarea id="acc-token" class="field-textarea" placeholder="Paste access token here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn" onclick="closeAddModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save & Start</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- LOGIN RESULT OVERLAY -->
+    <div class="login-overlay" id="login-overlay">
+        <div class="login-card" id="login-card"></div>
+    </div>
+</div>
+
+<script>
+/* ============================================
+   CONFIG
+============================================ */
+const EXP_TABLE = {
+1:0,2:48,3:202,4:544,5:1012,6:1844,7:2792,8:3800,9:4870,10:6004,
+11:7192,12:8448,13:9760,14:11140,15:12566,16:14060,17:15610,18:17224,19:18902,20:20632,
+21:22424,22:24278,23:26192,24:28166,25:30200,26:32294,27:34448,28:37804,29:41274,30:44870,
+31:48582,32:53394,33:58566,34:64096,35:69994,36:76460,37:83506,38:91128,39:99322,40:108092,
+41:120144,42:133266,43:147472,44:162760,45:179126,46:196572,47:215368,48:235516,49:257010,50:279860,
+51:304056,52:348318,53:394982,54:444044,55:495508,56:549364,57:633756,58:721744,59:813336,60:908522,
+61:1041438,62:1180352,63:1325266,64:1476184,65:1634300,66:1840946,67:2056594,68:2281242,69:2514880,70:2757530,
+71:3059506,72:3372284,73:3699456,74:4041030,75:4397002,76:4829104,77:5282204,78:5756304,79:6251408,80:6776502,
+81:7381324,82:8043154,83:8752982,84:9510808,85:10316338,86:11277190,87:12291748,88:13360304,89:14482858,90:15659418,
+91:17026708,92:18453950,93:19941280,94:21488570,95:23095858,96:24763138,97:26490428,98:28378704,99:30124996,100:32032884
+};
+
+let cachedAccounts = [];
+let myRole = "user";
+let activeFilter = "all";
+let serverUptime = 0;
+let uptimeFetchedAt = Date.now();
+
+/* ============================================
+   TOAST
+============================================ */
+function toast(msg, type="info"){
+    const wrap = document.getElementById("toast-wrap");
+    const t = document.createElement("div");
+    t.className = "toast " + type;
+    const icons = {success:"fa-circle-check", error:"fa-triangle-exclamation", info:"fa-circle-info"};
+    t.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${esc(msg)}</span>`;
+    wrap.appendChild(t);
+    setTimeout(()=>{
+        t.style.opacity = "0";
+        t.style.transform = "translateY(-10px)";
+        t.style.transition = ".3s";
+        setTimeout(()=>t.remove(), 300);
+    }, 3000);
+}
+
+/* ============================================
+   MODAL
+============================================ */
+function openAddModal(){ document.getElementById("add-modal").classList.add("active"); }
+function closeAddModal(){ document.getElementById("add-modal").classList.remove("active"); }
+function toggleFormType(){
+    const t = document.getElementById("acc-type").value;
+    document.getElementById("guest-inputs").style.display = t === "guest" ? "block" : "none";
+    document.getElementById("token-inputs").style.display = t === "token" ? "block" : "none";
+}
+
+/* ============================================
+   API ACTIONS
+============================================ */
+async function submitAddAccount(e){
+    e.preventDefault();
+    const type = document.getElementById("acc-type").value;
+    let payload = {};
+    let label = "";
+
+    if(type === "guest"){
+        const uid = document.getElementById("acc-uid").value.trim();
+        const pass = document.getElementById("acc-password").value.trim();
+        if(!uid || !pass){ toast("UID and password required", "error"); return; }
+        payload = {uid, password:pass};
+        label = uid;
+    } else {
+        const token = document.getElementById("acc-token").value.trim();
+        if(!token){ toast("Access token required", "error"); return; }
+        payload = {token};
+        label = "Token " + token.slice(0, 10) + "...";
+    }
+
+    closeAddModal();
+    document.querySelector("#add-modal form").reset();
+    toggleFormType();
+    showLoginLoading(label);
+
+    try {
+        const r = await fetch("/api/account/add", {
+            method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)
+        });
+        const d = await r.json();
+        if(d.status === "ok"){
+            showLoginSuccess(d.label || label, d.account || {});
+            fetchStats();
+        } else {
+            showLoginFailed(d.label || label, d.error || "Login failed");
+        }
+    } catch(err){
+        showLoginFailed(label, "Network error");
+    }
+}
+
+/* ============================================
+   LOGIN RESULT OVERLAY
+============================================ */
+function setLoginCard(html){
+    document.getElementById("login-card").innerHTML = html;
+    document.getElementById("login-overlay").classList.add("active");
+}
+function closeLoginOverlay(){
+    document.getElementById("login-overlay").classList.remove("active");
+}
+function showLoginLoading(label){
+    setLoginCard(`
+        <div class="login-icon loading"></div>
+        <div class="login-title">Adding account...</div>
+        <div class="login-sub">Logging in, please wait</div>
+        <span class="login-uid">${esc(label)}</span>`);
+}
+function showLoginSuccess(label, acc){
+    const has = acc && acc.uid;
+    const info = has ? `
+        <div class="login-info">
+            <div class="metric-box"><span>Nickname</span><strong>${esc(acc.nickname || "Unknown")}</strong></div>
+            <div class="metric-box"><span>Region</span><strong>${esc(acc.region || "BD")}</strong></div>
+            <div class="metric-box"><span>Level</span><strong>${esc(acc.level || 1)}</strong></div>
+            <div class="metric-box"><span>EXP</span><strong>${Number(acc.current_exp || 0).toLocaleString()}</strong></div>
+        </div>` : "";
+    setLoginCard(`
+        <div class="login-icon ok"><i class="fa-solid fa-check"></i></div>
+        <div class="login-title">Login successful</div>
+        <span class="login-uid">UID: ${esc(has ? acc.uid : label)}</span>
+        ${info}
+        <button class="btn btn-primary" onclick="closeLoginOverlay()">Done</button>`);
+}
+function showLoginFailed(label, reason){
+    setLoginCard(`
+        <div class="login-icon fail"><i class="fa-solid fa-xmark"></i></div>
+        <div class="login-title">Login failed</div>
+        <span class="login-uid">${esc(label)}</span>
+        <div class="login-reason">${esc(reason)}</div>
+        <button class="btn" onclick="closeLoginOverlay()">Close</button>`);
+}
+
+async function deleteAccount(uid){
+    if(!confirm(`Remove account ${uid}?`)) return;
+    try {
+        const r = await fetch("/api/account/delete", {
+            method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({uid})
+        });
+        const d = await r.json();
+        if(d.status === "ok"){
+            toast("Account removed", "success");
+            fetchStats();
+        } else { toast(d.error || "Delete failed", "error"); }
+    } catch(e){ toast("Network error", "error"); }
+}
+
+async function refreshAcc(uid){
+    try {
+        toast(`Refreshing ${uid}...`, "info");
+        await fetch("/api/account/refresh", {
+            method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({uid})
+        });
+        setTimeout(fetchStats, 800);
+    } catch(e){ toast("Refresh failed", "error"); }
+}
+
+async function togglePause(uid){
+    try {
+        const r = await fetch("/api/account/pause", {
+            method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({uid})
+        });
+        const d = await r.json();
+        if(d.status === "ok"){
+            toast(d.is_paused ? `Paused ${uid}` : `Resumed ${uid}`, d.is_paused ? "info" : "success");
+            fetchStats();
+        } else { toast(d.error || "Pause failed", "error"); }
+    } catch(e){ toast("Network error", "error"); }
+}
+
+async function togglePauseAll(){
+    const accs = cachedAccounts.filter(a => !isLimit(a));
+    if(!accs.length) return;
+    const allPaused = accs.every(isPaused);
+    const targets = accs.filter(a => allPaused ? true : !isPaused(a));
+    try {
+        await Promise.all(targets.map(a => fetch("/api/account/pause", {
+            method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({uid:String(a.uid)})
+        })));
+        toast(allPaused ? "All accounts resumed" : "All accounts paused", allPaused ? "success" : "info");
+        fetchStats();
+    } catch(e){ toast("Network error", "error"); }
+}
+
+/* ============================================
+   FILTERS & RENDER
+============================================ */
+function isPaused(a){ return Boolean(a.is_paused || a.status === "PAUSED"); }
+function isLimit(a){ return Boolean(a.limit_reached || a.status === "LIMIT_REACHED"); }
+
+function setFilter(f, btn){
+    activeFilter = f;
+    document.querySelectorAll(".controls .filter").forEach(x=>x.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+    filterAccounts();
+}
+
+function filterAccounts(){
+    const q = (document.getElementById("account-search").value || "").toLowerCase().trim();
+    document.querySelectorAll(".account-card").forEach(card=>{
+        const uid = (card.dataset.uid || "").toLowerCase();
+        const nick = (card.dataset.nick || "").toLowerCase();
+        const st = (card.dataset.status || "").toLowerCase();
+        const paused = card.dataset.paused === "1";
+
+        const matchSearch = !q || uid.includes(q) || nick.includes(q);
+        let matchFilter = true;
+
+        if(activeFilter === "in_match") matchFilter = st.includes("match") && !paused;
+        else if(activeFilter === "online") matchFilter = (st.includes("online") || st.includes("searching")) && !paused;
+        else if(activeFilter === "paused") matchFilter = paused;
+
+        card.style.display = matchSearch && matchFilter ? "" : "none";
+    });
+}
+
+function renderAccounts(accounts){
+    const container = document.getElementById("accounts-container");
+    document.getElementById("badge-count").innerText = accounts.length;
+
+    const pausable = accounts.filter(a => !isLimit(a));
+    const allPaused = pausable.length > 0 && pausable.every(isPaused);
+    document.getElementById("btn-pause-all").innerHTML = allPaused
+        ? '<i class="fa-solid fa-play"></i> Resume All'
+        : '<i class="fa-solid fa-pause"></i> Pause All';
+
+    if(accounts.length === 0){
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fa-solid fa-ghost"></i>
+                <p>No accounts connected.</p>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fa-solid fa-plus"></i> Add Account
+                </button>
+            </div>`;
+        return;
+    }
+
+    if(container.querySelector(".empty-state")) container.innerHTML = "";
+
+    const uids = new Set(accounts.map(a=>String(a.uid)));
+    container.querySelectorAll(".account-card").forEach(c=>{
+        if(!uids.has(c.dataset.uid)) c.remove();
+    });
+
+    accounts.forEach(acc=>{
+        const uid = String(acc.uid);
+        const level = Math.max(1, parseInt(acc.level) || 1);
+        const nextLvl = Math.min(100, level + 1);
+        const baseExp = EXP_TABLE[level] ?? 0;
+        const targetExp = EXP_TABLE[nextLvl] ?? baseExp + 50000;
+        const needed = Math.max(1, targetExp - baseExp);
+        const curExp = Number(acc.current_exp || 0);
+        const earned = Math.max(0, curExp - baseExp);
+        const remaining = Math.max(0, targetExp - curExp);
+        const pct = level >= 100 ? 100 : Math.min(100, Math.max(0, earned / needed * 100));
+
+        const limitHit = isLimit(acc);
+        const paused = isPaused(acc) && !limitHit;
+        const status = String(acc.status || "ONLINE");
+
+        let cls = "status-online";
+        let stText = status;
+        if(limitHit){ cls = "status-limit"; stText = "LIMIT REACHED"; }
+        else if(paused){ cls = "status-paused"; stText = "PAUSED"; }
+        else if(status === "IN_MATCH"){ cls = "status-match"; stText = `IN MATCH (${acc.active_matches || 0})`; }
+        else if(status === "ERROR" || status === "OFFLINE"){ cls = "status-error"; }
+
+        let card = document.getElementById("acc-" + uid);
+        if(!card){
+            card = document.createElement("div");
+            card.id = "acc-" + uid;
+            card.className = "account-card";
+            container.appendChild(card);
+        }
+
+        card.dataset.uid = uid;
+        card.dataset.nick = acc.nickname || "";
+        card.dataset.status = status.toLowerCase();
+        card.dataset.paused = paused ? "1" : "0";
+
+        card.innerHTML = `
+            <div class="acc-head">
+                <div class="acc-id">
+                    <div class="acc-avatar">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span class="acc-level">L${level}</span>
+                    </div>
+                    <div class="acc-info">
+                        <div class="acc-name">
+                            <span>${esc(acc.nickname || "Unknown")}</span>
+                            <span class="acc-region">${esc(acc.region || "BD")}</span>
+                            ${myRole === "admin" && acc.owner ? `<span class="acc-region" title="Owner">@${esc(acc.owner)}</span>` : ""}
+                        </div>
+                        <div class="acc-uid">
+                            <span>UID: ${esc(uid)}</span>
+                            <button class="copy-btn" onclick="copyUid('${escAttr(uid)}')" title="Copy"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-pill ${cls}"><span class="sdot"></span>${esc(stText)}</div>
+            </div>
+
+            <div class="acc-metrics">
+                <div class="metric-box"><span>Initial</span><strong>${Number(acc.initial_exp || 0).toLocaleString()}</strong></div>
+                <div class="metric-box"><span>Current</span><strong>${curExp.toLocaleString()}</strong></div>
+                <div class="metric-box gain"><span>Gained</span><strong>+${Number(acc.gained_exp || 0).toLocaleString()}</strong></div>
+            </div>
+
+            <div class="progress-block">
+                <div class="progress-top">
+                    <span>LVL ${level} → <b>L${nextLvl}</b></span>
+                    <b>${remaining.toLocaleString()} EXP LEFT</b>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width:${pct.toFixed(1)}%"></div>
+                </div>
+                <div class="progress-bot">
+                    <span>${earned.toLocaleString()} / ${needed.toLocaleString()}</span>
+                    <span>${pct.toFixed(1)}%</span>
+                </div>
+            </div>
+
+            <div class="acc-foot">
+                <span class="acc-time"><i class="fa-regular fa-clock"></i> ${esc(acc.last_match_time || "Running...")} · ${Number(acc.matches_played || 0)} matches</span>
+                <div class="acc-actions">
+                    ${limitHit
+                        ? `<button class="pause-btn" disabled title="EXP limit reached"><i class="fa-solid fa-ban"></i> Limit</button>`
+                        : `<button class="pause-btn ${paused ? "resume" : ""}" onclick="togglePause('${escAttr(uid)}')"><i class="fa-solid ${paused ? "fa-play" : "fa-pause"}"></i> ${paused ? "Resume" : "Pause"}</button>`}
+                    <button class="act-btn" title="Refresh Profile/EXP" onclick="refreshAcc('${escAttr(uid)}')"><i class="fa-solid fa-rotate"></i></button>
+                    <button class="act-btn danger" title="Delete Account" onclick="deleteAccount('${escAttr(uid)}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>`;
+    });
+    filterAccounts();
+}
+
+/* ============================================
+   FETCH STATS
+============================================ */
+async function fetchStats(){
+    try {
+        const r = await fetch("/api/stats");
+        if(r.status === 401){ location.href = "/login"; return; }
+        if(!r.ok) return;
+        const d = await r.json();
+        applyUser(d);
+
+        const accs = Array.isArray(d.accounts) ? d.accounts : [];
+        const gained = Number(d.total_gained_exp || 0);
+        const completed = Number(d.total_matches || 0);
+
+        serverUptime = Number(d.uptime || 0);
+        uptimeFetchedAt = Date.now();
+        const hours = Math.max(0.016, serverUptime / 3600);
+
+        const active = accs.filter(a => !isPaused(a) && !isLimit(a)).length;
+        const activeMatches = accs.reduce((n, a) => n + Number(a.active_matches || 0), 0);
+        const inMatch = accs.filter(a => a.status === "IN_MATCH" && !isPaused(a) && !isLimit(a)).length;
+
+        setText("stat-accounts", d.total_accounts ?? accs.length);
+        setText("stat-online", active + " Active");
+        setText("stat-active-matches", activeMatches);
+        setText("stat-in-match", inMatch + " in match");
+        setText("stat-completed", completed);
+        setText("stat-per-hour", "~" + Math.round(completed / hours) + " / hr");
+        setText("stat-exp", "+" + gained.toLocaleString());
+        setText("stat-exp-rate", "~" + Math.round(gained / hours).toLocaleString() + " EXP/hr");
+        tickUptime();
+
+        cachedAccounts = accs;
+        renderAccounts(accs);
+    } catch(e){ console.warn("Fetch error:", e); }
+}
+
+/* ============================================
+   HELPERS
+============================================ */
+function copyUid(uid){
+    if(navigator.clipboard) navigator.clipboard.writeText(uid).then(()=> toast("UID copied", "success"));
+}
+function setText(id, v){ const el = document.getElementById(id); if(el) el.innerText = v ?? ""; }
+function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function escAttr(s){ return esc(s); }
+function manualRefresh(){ fetchStats(); toast("Refreshed", "info"); }
+
+function applyUser(d){
+    myRole = d.role || "user";
+    const chip = document.getElementById("user-chip");
+    if(d.username){
+        const lim = Number(d.exp_limit || 0);
+        chip.innerHTML = `<i class="fa-solid fa-user"></i> ${esc(d.username)}` + (myRole === "user" && lim > 0 ? `<small>Limit ${lim.toLocaleString()} EXP / account</small>` : "");
+        chip.style.display = "";
+    }
+    document.getElementById("admin-link").style.display = myRole === "admin" ? "" : "none";
+}
+
+async function logout(){
+    try { const d = await (await fetch("/api/logout", {method:"POST"})).json(); location.href = d.redirect || "/login"; }
+    catch(e){ location.href = "/login"; }
+}
+
+function tickUptime(){
+    const el = Math.floor(serverUptime + (Date.now() - uptimeFetchedAt) / 1000);
+    const h = String(Math.floor(el / 3600)).padStart(2, "0");
+    const m = String(Math.floor((el % 3600) / 60)).padStart(2, "0");
+    const s = String(el % 60).padStart(2, "0");
+    setText("stat-uptime", `${h}:${m}:${s}`);
+}
+
+/* ============================================
+   INIT
+============================================ */
+fetchStats();
+setInterval(fetchStats, 2500);
+setInterval(tickUptime, 1000);
+</script>
+</body>
+</html>
