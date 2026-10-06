@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TEAM 84FF | __TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+:root {
+    --bg-base: #121217; --bg-surface: #202026; --bg-panel: rgba(32, 32, 38, 0.78);
+    --border: rgba(255, 255, 255, 0.11); --border-hover: rgba(255, 255, 255, 0.2);
+    --accent-main: #7479f6; --accent-main-hover: #6368f1; --accent-glow: rgba(116, 121, 246, 0.32);
+    --success: #1fc98f; --warning: #fbaa1c; --danger: #f45a5a; --danger-bg: rgba(244, 90, 90, 0.13);
+    --info: #2bb6f1;
+    --text-main: #f8fafc; --text-muted: #a8b6ca; --text-dim: #7d8ca5;
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { min-height: 100vh; background: var(--bg-base); color: var(--text-main); overflow-x: hidden; }
+body { display: flex; align-items: center; justify-content: center; padding: 16px; }
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+        radial-gradient(circle at 15% 50%, rgba(116, 121, 246, 0.14), transparent 32%),
+        radial-gradient(circle at 85% 30%, rgba(31, 201, 143, 0.09), transparent 32%);
+    animation: ambientPulse 15s ease-in-out infinite alternate;
+}
+@keyframes ambientPulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.card {
+    position: relative; z-index: 1; width: 100%; max-width: 400px;
+    background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--r-xl);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-lg); padding: 30px 24px 24px; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.brand { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 22px; }
+.brand-mark {
+    width: 52px; height: 52px; border-radius: var(--r-md); margin-bottom: 14px;
+    background: linear-gradient(135deg, var(--accent-main), var(--info));
+    display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+.brand-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
+.badge {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 3px 10px;
+    border-radius: 100px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    background: rgba(116, 121, 246, 0.15); color: var(--accent-main); border: 1px solid rgba(116, 121, 246, 0.35);
+}
+h1 { font-size: 20px; font-weight: 800; margin-top: 14px; }
+.sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.input-wrap { position: relative; }
+.input-wrap > i.lead { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 13px; }
+.input {
+    width: 100%; padding: 11px 38px 11px 36px; border-radius: var(--r-sm);
+    background: var(--bg-base); border: 1px solid var(--border); color: #fff;
+    font-size: 14px; outline: none; transition: 0.2s;
+}
+.input:focus { border-color: var(--accent-main); box-shadow: 0 0 0 2px var(--accent-glow); }
+.eye { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; }
+.eye:hover { color: var(--text-main); }
+
+.btn {
+    width: 100%; margin-top: 6px; padding: 12px; border-radius: var(--r-sm);
+    background: var(--accent-main); border: 1px solid var(--accent-main); color: #fff;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+    box-shadow: 0 4px 12px var(--accent-glow); display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:hover { background: var(--accent-main-hover); transform: translateY(-1px); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.65; cursor: wait; transform: none; }
+.spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; animation: spin 0.8s linear infinite; display: none; }
+.btn.loading .spin { display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error {
+    display: none; margin-bottom: 14px; padding: 10px 12px; border-radius: var(--r-sm);
+    background: var(--danger-bg); border: 1px solid rgba(244, 90, 90, 0.4); color: var(--danger);
+    font-size: 12px; font-weight: 600;
+}
+.error.show { display: block; animation: fadeUp 0.25s ease both; }
+.alt { text-align: center; margin-top: 16px; font-size: 12px; }
+.alt a { color: var(--text-muted); text-decoration: none; }
+.alt a:hover { color: var(--text-main); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="brand">
+        <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+        <div class="brand-name">TEAM 84FF <span style="color:var(--text-muted);font-weight:600">/ LEVEL UP BOT</span></div>
+        <span class="badge">__BADGE__</span>
+        <h1>__TITLE__</h1>
+        <div class="sub">__SUBTITLE__</div>
+    </div>
+
+    <div class="error" id="error"></div>
+
+    <form onsubmit="submitLogin(event)" autocomplete="on">
+        <div class="field">
+            <label for="username">Username</label>
+            <div class="input-wrap">
+                <i class="fa-solid fa-user lead"></i>
+                <input class="input" id="username" name="username" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" required>
+            </div>
+        </div>
+        <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <i class="fa-solid fa-lock lead"></i>
+                <input class="input" id="password" name="password" type="password" autocomplete="current-password" required>
+                <button type="button" class="eye" onclick="toggleEye()" aria-label="Show password"><i class="fa-regular fa-eye" id="eye-ic"></i></button>
+            </div>
+        </div>
+        <button class="btn" id="btn" type="submit"><span class="spin"></span><span id="btn-text">Log in</span></button>
+    </form>
+    <div class="alt">__ALT__</div>
+</div>
+
+<script>
+const ENDPOINT = "__ENDPOINT__";
+function showError(msg){ const e = document.getElementById("error"); e.textContent = msg; e.classList.add("show"); }
+function toggleEye(){
+    const p = document.getElementById("password");
+    const show = p.type === "password";
+    p.type = show ? "text" : "password";
+    document.getElementById("eye-ic").className = show ? "fa-regular fa-eye-slash" : "fa-regular fa-eye";
+}
+async function submitLogin(ev){
+    ev.preventDefault();
+    const btn = document.getElementById("btn");
+    document.getElementById("error").classList.remove("show");
+    btn.disabled = true; btn.classList.add("loading");
+    try {
+        const r = await fetch(ENDPOINT, {
+            method: "POST", headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: document.getElementById("username").value.trim(), password: document.getElementById("password").value})
+        });
+        const d = await r.json();
+        if(d.status === "ok"){ location.href = d.redirect || "/"; return; }
+        showError(d.error || "Login failed");
+    } catch(e){ showError("Network error"); }
+    btn.disabled = false; btn.classList.remove("loading");
+}
+</script>
+</body>
+</html>
