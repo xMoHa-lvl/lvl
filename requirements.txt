@@ -1,5 +1,5 @@
-aiohttp
 httpx
+aiohttp
 pycryptodome
 protobuf>=5.26
 protobuf-decoder
