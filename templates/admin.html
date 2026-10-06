@@ -1,0 +1,509 @@
+here<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TEAM 84FF | Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+:root {
+    --bg-base: #121217; --bg-surface: #202026; --bg-panel: rgba(32, 32, 38, 0.78);
+    --border: rgba(255, 255, 255, 0.11); --border-hover: rgba(255, 255, 255, 0.2);
+    --accent-main: #7479f6; --accent-main-hover: #6368f1; --accent-glow: rgba(116, 121, 246, 0.32);
+    --success: #1fc98f; --success-bg: rgba(31, 201, 143, 0.13);
+    --warning: #fbaa1c; --warning-bg: rgba(251, 170, 28, 0.13);
+    --danger: #f45a5a; --danger-bg: rgba(244, 90, 90, 0.13);
+    --info: #2bb6f1;
+    --text-main: #f8fafc; --text-muted: #a8b6ca; --text-dim: #7d8ca5;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1); --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3); --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 24px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { min-height: 100vh; background: var(--bg-base); color: var(--text-main); overflow-x: hidden; }
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+        radial-gradient(circle at 15% 50%, rgba(116, 121, 246, 0.14), transparent 32%),
+        radial-gradient(circle at 85% 30%, rgba(31, 201, 143, 0.09), transparent 32%);
+    animation: ambientPulse 15s ease-in-out infinite alternate;
+}
+@keyframes ambientPulse { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
+#app { position: relative; z-index: 1; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.shell { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+.topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;
+    border-radius: var(--r-lg); background: var(--bg-panel); border: 1px solid var(--border);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: var(--shadow-md);
+}
+.brand-block { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand-mark {
+    width: 42px; height: 42px; border-radius: var(--r-md); flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent-main), var(--info));
+    display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff;
+    box-shadow: 0 4px 15px var(--accent-glow); animation: markGlow 3.5s ease-in-out infinite;
+}
+@keyframes markGlow { 0%, 100% { box-shadow: 0 4px 15px var(--accent-glow); } 50% { box-shadow: 0 4px 26px rgba(116, 121, 246, 0.55); } }
+.brand-name-main { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; }
+.brand-name-main span { color: var(--text-muted); font-weight: 600; }
+.brand-tag { margin-top: 2px; color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.top-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn {
+    padding: 9px 14px; border-radius: var(--r-sm); border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04); color: var(--text-main); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; white-space: nowrap; text-decoration: none;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--border-hover); transform: translateY(-1px); }
+.btn:active { transform: scale(0.96); }
+.btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+.btn-primary { background: var(--accent-main); border-color: var(--accent-main); color: #fff; box-shadow: 0 4px 12px var(--accent-glow); }
+.btn-primary:hover { background: var(--accent-main-hover); border-color: var(--accent-main-hover); }
+.btn-danger:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+.btn-sm { padding: 7px 11px; font-size: 12px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+.stat-card {
+    padding: 16px; border-radius: var(--r-lg); background: var(--bg-surface); border: 1px solid var(--border);
+    display: flex; flex-direction: column; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stat-card:nth-child(2) { animation-delay: 0.06s; } .stat-card:nth-child(3) { animation-delay: 0.12s; } .stat-card:nth-child(4) { animation-delay: 0.18s; }
+.stat-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-glow); }
+.stat-ic { width: 32px; height: 32px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 12px; }
+.stat-card.blue .stat-ic { color: var(--info); background: rgba(43, 182, 241, 0.12); }
+.stat-card.violet .stat-ic { color: var(--accent-main); background: var(--accent-glow); }
+.stat-card.pink .stat-ic { color: var(--danger); background: var(--danger-bg); }
+.stat-label { color: var(--text-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.stat-value { font-size: 20px; font-weight: 800; line-height: 1; font-family: 'JetBrains Mono', monospace; }
+
+.panel {
+    margin-top: 16px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--r-lg);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.panel-head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.panel-head h3 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.panel-head h3 i { color: var(--accent-main); }
+.chip { padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 700; background: var(--border); }
+.panel-body { padding: 16px; }
+
+.create-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+.field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.input {
+    width: 100%; padding: 10px 12px; border-radius: var(--r-sm); background: var(--bg-base);
+    border: 1px solid var(--border); color: #fff; font-size: 13px; outline: none; transition: 0.2s;
+}
+.input:focus { border-color: var(--accent-main); box-shadow: 0 0 0 2px var(--accent-glow); }
+.hint { margin-top: 10px; font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+.users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; padding: 16px; }
+.user-card {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.user-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-glow); }
+.user-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.user-avatar {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(135deg, var(--bg-panel), var(--bg-base));
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted);
+}
+.user-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-meta { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.metric-box { background: rgba(0,0,0,0.16); padding: 8px; border-radius: var(--r-sm); text-align: center; }
+.metric-box span { display: block; font-size: 9px; color: var(--text-dim); font-weight: 600; margin-bottom: 2px; text-transform: uppercase; }
+.metric-box strong { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; }
+.metric-box.gain strong { color: var(--success); }
+.metric-box.warn strong { color: var(--warning); }
+.limit-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.limit-row .input { font-family: 'JetBrains Mono', monospace; }
+.user-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
+.user-actions .btn { flex: 1; }
+
+.empty-state { grid-column: 1 / -1; text-align: center; padding: 36px 16px; color: var(--text-muted); font-size: 13px; }
+.empty-state i { display: block; font-size: 28px; margin-bottom: 12px; opacity: 0.5; }
+
+.toast-wrap { position: fixed; top: 16px; right: 16px; left: 16px; z-index: 10000; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+@media (min-width: 600px) { .toast-wrap { left: auto; max-width: 380px; } }
+.toast {
+    padding: 12px 16px; border-radius: var(--r-md); background: var(--bg-surface); border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 10px;
+    animation: toastIn 0.3s ease forwards; pointer-events: auto;
+}
+.toast.success i { color: var(--success); } .toast.error i { color: var(--danger); } .toast.info i { color: var(--info); }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+
+/* RUNNING ACCOUNTS */
+.stat-foot { color: var(--text-dim); font-size: 11px; font-weight: 500; margin-top: 6px; }
+.stat-card.lime .stat-ic { color: var(--success); background: var(--success-bg); }
+.stat-card.amber .stat-ic { color: var(--warning); background: var(--warning-bg); }
+.toolbar { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.12); }
+.search { position: relative; flex: 1; min-width: 180px; }
+.search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; }
+.search .input { padding-left: 36px; }
+.filters { display: flex; gap: 4px; background: var(--bg-surface); padding: 3px; border-radius: var(--r-sm); border: 1px solid var(--border); }
+.filter { border: 0; background: transparent; color: var(--text-muted); padding: 7px 12px; border-radius: 6px; cursor: pointer; font-size: 10px; font-weight: 700; transition: 0.2s; white-space: nowrap; }
+.filter.active { background: var(--bg-panel); color: var(--text-main); box-shadow: var(--shadow-sm); }
+select.input { width: auto; min-width: 150px; cursor: pointer; }
+
+.acc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; padding: 16px; }
+.acc-card {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 14px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.acc-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-glow); }
+.acc-card.is-admin { border-color: rgba(116, 121, 246, 0.45); background: linear-gradient(180deg, rgba(116,121,246,0.07), var(--bg-surface) 60%); }
+.acc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.acc-id { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.acc-avatar {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; position: relative;
+    background: linear-gradient(135deg, var(--bg-panel), var(--bg-base)); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 15px;
+}
+.acc-level { position: absolute; right: -5px; bottom: -5px; background: var(--accent-main); color: #fff; font-size: 9px; font-weight: 800; padding: 1px 4px; border-radius: 4px; border: 2px solid var(--bg-surface); }
+.acc-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acc-uid { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.status-pill { padding: 4px 8px; border-radius: 100px; font-size: 9px; font-weight: 700; text-transform: uppercase; display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.status-pill .sdot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.st-online { background: var(--success-bg); color: var(--success); }
+.st-match { background: var(--accent-glow); color: var(--accent-main); }
+.st-paused { background: var(--warning-bg); color: var(--warning); }
+.st-limit { background: var(--danger-bg); color: var(--danger); }
+.owner-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 11px; color: var(--text-muted); }
+.owner-badge {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 700;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-main);
+}
+.owner-badge.admin { background: rgba(116,121,246,0.16); border-color: rgba(116,121,246,0.5); color: var(--accent-main); }
+.limit-bar { height: 5px; background: var(--bg-base); border-radius: 10px; overflow: hidden; margin: -2px 0 12px; }
+.limit-bar > div { height: 100%; background: var(--accent-main); border-radius: 10px; transition: width 0.5s ease; }
+.limit-bar > div.full { background: var(--danger); }
+.acc-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid var(--border); }
+.acc-time { font-size: 10px; color: var(--text-dim); min-width: 0; }
+.acc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.act-btn {
+    width: 30px; height: 30px; border-radius: var(--r-sm); border: 1px solid var(--border); background: var(--bg-base);
+    color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.act-btn:hover { background: var(--border-hover); color: var(--text-main); transform: translateY(-1px) scale(1.06); }
+.act-btn.danger:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
+.pause-btn {
+    padding: 0 12px; height: 30px; border-radius: var(--r-sm); border: 1px solid var(--warning); background: var(--warning-bg); color: var(--warning);
+    font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.pause-btn:hover { background: var(--warning); color: #121217; }
+.pause-btn.resume { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.pause-btn.resume:hover { background: var(--success); color: #121217; }
+.pause-btn:disabled { opacity: 0.55; cursor: not-allowed; background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+.user-actions.two { margin-top: -2px; padding-top: 0; border-top: 0; margin-bottom: 10px; }
+
+@media (max-width: 900px) { .create-grid { grid-template-columns: 1fr 1fr; } .create-grid .btn { grid-column: 1 / -1; } }
+@media (max-width: 768px) {
+    .shell { padding: 12px; } .topbar { padding: 10px 14px; }
+    .brand-name-main { font-size: 14px; } .brand-mark { width: 36px; height: 36px; font-size: 15px; }
+    .mobile-hide { display: none !important; }
+    .stats { grid-template-columns: 1fr 1fr; } .stat-card:last-child { grid-column: span 2; }
+    .create-grid { grid-template-columns: 1fr; }
+    .users-grid { grid-template-columns: 1fr; padding: 12px; }
+    .acc-grid { grid-template-columns: 1fr; padding: 12px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat-card:last-child { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="toast-wrap" id="toast-wrap"></div>
+<div class="shell">
+
+    <header class="topbar">
+        <div class="brand-block">
+            <div class="brand-mark"><i class="fa-solid fa-shield-halved"></i></div>
+            <div>
+                <div class="brand-name-main">TEAM 84FF <span class="mobile-hide">/ ADMIN PANEL</span></div>
+                <div class="brand-tag mobile-hide" id="admin-name">Administrator</div>
+            </div>
+        </div>
+        <div class="top-actions">
+            <a class="btn" href="/"><i class="fa-solid fa-gauge-high"></i> <span class="mobile-hide">Dashboard</span></a>
+            <button class="btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> <span class="mobile-hide">Logout</span></button>
+        </div>
+    </header>
+
+    <section class="stats">
+        <div class="stat-card blue"><div class="stat-ic"><i class="fa-solid fa-users"></i></div><span class="stat-label">Users</span><div class="stat-value" id="st-users">0</div><div class="stat-foot" id="st-users-foot">&nbsp;</div></div>
+        <div class="stat-card violet"><div class="stat-ic"><i class="fa-solid fa-gamepad"></i></div><span class="stat-label">Running Accounts</span><div class="stat-value" id="st-accounts">0</div><div class="stat-foot" id="st-accounts-foot">&nbsp;</div></div>
+        <div class="stat-card lime"><div class="stat-ic"><i class="fa-solid fa-rocket"></i></div><span class="stat-label">In Match</span><div class="stat-value" id="st-match">0</div><div class="stat-foot" id="st-match-foot">&nbsp;</div></div>
+        <div class="stat-card pink"><div class="stat-ic"><i class="fa-solid fa-arrow-trend-up"></i></div><span class="stat-label">EXP Gained</span><div class="stat-value" id="st-exp">+0</div><div class="stat-foot">All accounts</div></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head"><h3><i class="fa-solid fa-satellite-dish"></i> Running Accounts <span class="chip" id="acc-count">0</span></h3></div>
+        <div class="toolbar">
+            <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input class="input" id="acc-search" type="text" placeholder="Search nickname, UID or owner..." oninput="renderAccounts()"></div>
+            <div class="filters">
+                <button class="filter active" onclick="setOwnerFilter('all', this)">ALL</button>
+                <button class="filter" onclick="setOwnerFilter('admin', this)">ADMIN</button>
+                <button class="filter" onclick="setOwnerFilter('user', this)">USERS</button>
+            </div>
+            <select class="input" id="acc-owner" onchange="renderAccounts()"><option value="">All owners</option></select>
+        </div>
+        <div class="acc-grid" id="acc-list"><div class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i>Loading accounts...</div></div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head"><h3><i class="fa-solid fa-user-plus"></i> Create User</h3></div>
+        <div class="panel-body">
+            <form class="create-grid" onsubmit="createUser(event)" autocomplete="off">
+                <div class="field"><label>Username</label><input class="input" id="new-username" type="text" placeholder="e.g. ahmad_01" autocomplete="off" autocapitalize="off" required></div>
+                <div class="field"><label>Password</label><input class="input" id="new-password" type="text" placeholder="min 6 characters" autocomplete="off" required></div>
+                <div class="field"><label>EXP limit per account</label><input class="input" id="new-limit" type="number" min="0" step="1" placeholder="e.g. 50000" value="50000" required></div>
+                <button class="btn btn-primary" type="submit" id="create-btn"><i class="fa-solid fa-plus"></i> Create</button>
+            </form>
+            <div class="hint">Leveling stops automatically for an account once it gains this much EXP (a small overshoot is possible because matches finish in chunks). Use <b>0</b> for unlimited. Each user only sees the game accounts they added themselves.</div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head"><h3><i class="fa-solid fa-layer-group"></i> Users <span class="chip" id="user-count">0</span></h3></div>
+        <div class="users-grid" id="users-list"><div class="empty-state"><i class="fa-solid fa-circle-notch fa-spin"></i>Loading users...</div></div>
+    </section>
+</div>
+</div>
+
+<script>
+function esc(s){ return String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function toast(msg, type="info"){
+    const wrap = document.getElementById("toast-wrap");
+    const t = document.createElement("div");
+    t.className = "toast " + type;
+    const icons = {success:"fa-circle-check", error:"fa-triangle-exclamation", info:"fa-circle-info"};
+    t.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${esc(msg)}</span>`;
+    wrap.appendChild(t);
+    setTimeout(()=>{ t.style.opacity = "0"; t.style.transition = ".3s"; setTimeout(()=>t.remove(), 300); }, 3000);
+}
+async function api(path, body){
+    const r = await fetch(path, body === undefined ? {} : {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    if(r.status === 401 || r.status === 403){ location.href = "/admin/login"; throw new Error("auth"); }
+    return r.json();
+}
+async function logout(){
+    try { const d = await (await fetch("/api/logout", {method:"POST"})).json(); location.href = d.redirect || "/admin/login"; }
+    catch(e){ location.href = "/admin/login"; }
+}
+
+async function createUser(e){
+    e.preventDefault();
+    const btn = document.getElementById("create-btn");
+    btn.disabled = true;
+    try {
+        const d = await api("/api/admin/users/create", {
+            username: document.getElementById("new-username").value.trim(),
+            password: document.getElementById("new-password").value,
+            exp_limit: document.getElementById("new-limit").value
+        });
+        if(d.status === "ok"){
+            toast("User created", "success");
+            document.getElementById("new-username").value = "";
+            document.getElementById("new-password").value = "";
+            loadUsers(true);
+        } else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+    btn.disabled = false;
+}
+async function saveLimit(username){
+    const v = document.getElementById("lim-" + username).value;
+    try {
+        const d = await api("/api/admin/users/update", {username, exp_limit: v});
+        if(d.status === "ok"){ toast("Limit updated", "success"); loadUsers(true); } else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+}
+async function resetPassword(username){
+    const pw = prompt(`New password for ${username} (min 6 characters):`);
+    if(!pw) return;
+    try {
+        const d = await api("/api/admin/users/update", {username, password: pw});
+        if(d.status === "ok") toast("Password changed", "success"); else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+}
+async function deleteUser(username){
+    if(!confirm(`Delete user "${username}" and ALL of their game accounts? This cannot be undone.`)) return;
+    try {
+        const d = await api("/api/admin/users/delete", {username});
+        if(d.status === "ok"){ toast("User deleted", "success"); loadUsers(true); } else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+}
+
+function renderUsers(users){
+    const list = document.getElementById("users-list");
+    document.getElementById("user-count").textContent = users.length;
+    if(!users.length){
+        list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-ghost"></i>No users yet. Create the first one above.</div>`;
+        return;
+    }
+    list.innerHTML = users.map(u => `
+        <div class="user-card">
+            <div class="user-head">
+                <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                <div style="min-width:0">
+                    <div class="user-name">${esc(u.username)}</div>
+                    <div class="user-meta">Created ${esc(u.created_at || "-")}</div>
+                </div>
+            </div>
+            <div class="metrics">
+                <div class="metric-box"><span>Accounts</span><strong>${u.accounts}</strong></div>
+                <div class="metric-box gain"><span>Gained</span><strong>+${Number(u.gained_exp).toLocaleString()}</strong></div>
+                <div class="metric-box ${u.limit_reached ? "warn" : ""}"><span>At limit</span><strong>${u.limit_reached}</strong></div>
+            </div>
+            <div class="limit-row">
+                <input class="input" id="lim-${esc(u.username)}" type="number" min="0" step="1" value="${u.exp_limit}" title="EXP limit per account (0 = unlimited)">
+                <button class="btn btn-primary btn-sm" onclick="saveLimit('${esc(u.username)}')"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+            </div>
+            <div class="user-actions two">
+                <button class="btn btn-sm" onclick="bulkPause('${esc(u.username)}', 'pause')"><i class="fa-solid fa-pause"></i> Pause all</button>
+                <button class="btn btn-sm" onclick="bulkPause('${esc(u.username)}', 'resume')"><i class="fa-solid fa-play"></i> Resume all</button>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-sm" onclick="resetPassword('${esc(u.username)}')"><i class="fa-solid fa-key"></i> Password</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteUser('${esc(u.username)}')"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+        </div>`).join("");
+}
+
+/* ---------- running accounts ---------- */
+let allAccounts = [];
+let ownerFilter = "all";
+
+function setOwnerFilter(f, btn){
+    ownerFilter = f;
+    document.querySelectorAll(".toolbar .filter").forEach(x => x.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+    renderAccounts();
+}
+function statusInfo(a){
+    if(a.limit_reached) return ["st-limit", "LIMIT REACHED"];
+    if(a.is_paused) return ["st-paused", "PAUSED"];
+    if(a.status === "IN_MATCH") return ["st-match", `IN MATCH (${a.active_matches || 0})`];
+    if(a.status === "ERROR" || a.status === "OFFLINE") return ["st-limit", a.status];
+    return ["st-online", a.status || "ONLINE"];
+}
+function renderAccounts(){
+    const q = (document.getElementById("acc-search").value || "").toLowerCase().trim();
+    const ownerSel = document.getElementById("acc-owner").value;
+    const list = allAccounts.filter(a => {
+        if(ownerFilter === "admin" && a.owner_role !== "admin") return false;
+        if(ownerFilter === "user" && a.owner_role !== "user") return false;
+        if(ownerSel && a.owner !== ownerSel) return false;
+        if(q && !(String(a.uid).toLowerCase().includes(q) || String(a.nickname).toLowerCase().includes(q) || String(a.owner).toLowerCase().includes(q))) return false;
+        return true;
+    });
+    document.getElementById("acc-count").textContent = list.length;
+    const box = document.getElementById("acc-list");
+    if(!list.length){
+        box.innerHTML = `<div class="empty-state"><i class="fa-solid fa-ghost"></i>${allAccounts.length ? "No accounts match this filter." : "No running accounts yet."}</div>`;
+        return;
+    }
+    box.innerHTML = list.map(a => {
+        const [cls, txt] = statusInfo(a);
+        const isAdmin = a.owner_role === "admin";
+        const lim = Number(a.exp_limit || 0);
+        const pct = lim > 0 ? Math.min(100, a.gained_exp / lim * 100) : 0;
+        const owner = isAdmin
+            ? `<span class="owner-badge admin"><i class="fa-solid fa-shield-halved"></i> ADMIN</span><span>@${esc(a.owner)}</span>`
+            : `<span class="owner-badge"><i class="fa-solid fa-user"></i> ${esc(a.owner || "unknown")}</span>`;
+        const uid = esc(a.uid);
+        return `
+        <div class="acc-card ${isAdmin ? "is-admin" : ""}">
+            <div class="acc-head">
+                <div class="acc-id">
+                    <div class="acc-avatar"><i class="fa-solid fa-gamepad"></i><span class="acc-level">L${esc(a.level)}</span></div>
+                    <div style="min-width:0"><div class="acc-name">${esc(a.nickname || "Unknown")} <span style="font-size:9px;color:var(--text-dim)">${esc(a.region || "")}</span></div><div class="acc-uid">UID: ${uid}</div></div>
+                </div>
+                <div class="status-pill ${cls}"><span class="sdot"></span>${esc(txt)}</div>
+            </div>
+            <div class="owner-row"><span>Opened by</span>${owner}</div>
+            <div class="metrics">
+                <div class="metric-box gain"><span>Gained</span><strong>+${Number(a.gained_exp).toLocaleString()}</strong></div>
+                <div class="metric-box"><span>Limit</span><strong>${lim > 0 ? lim.toLocaleString() : "&infin;"}</strong></div>
+                <div class="metric-box"><span>Matches</span><strong>${a.matches_played}</strong></div>
+            </div>
+            ${lim > 0 ? `<div class="limit-bar"><div class="${pct >= 100 ? "full" : ""}" style="width:${pct.toFixed(1)}%"></div></div>` : ""}
+            <div class="acc-foot">
+                <span class="acc-time"><i class="fa-regular fa-clock"></i> ${a.added_at ? "Added " + esc(a.added_at) : (a.last_match_time ? "Last match " + esc(a.last_match_time) : "Running...")}</span>
+                <div class="acc-actions">
+                    ${a.limit_reached
+                        ? `<button class="pause-btn" disabled><i class="fa-solid fa-ban"></i> Limit</button>`
+                        : `<button class="pause-btn ${a.is_paused ? "resume" : ""}" onclick="accAction('pause','${uid}')"><i class="fa-solid ${a.is_paused ? "fa-play" : "fa-pause"}"></i> ${a.is_paused ? "Resume" : "Pause"}</button>`}
+                    <button class="act-btn" title="Refresh EXP" onclick="accAction('refresh','${uid}')"><i class="fa-solid fa-rotate"></i></button>
+                    <button class="act-btn danger" title="Remove account" onclick="accAction('delete','${uid}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+}
+async function accAction(kind, uid){
+    if(kind === "delete" && !confirm(`Remove account ${uid}? It will be deleted from its owner as well.`)) return;
+    try {
+        const d = await api("/api/account/" + kind, {uid});
+        if(d.status === "ok"){
+            toast(kind === "delete" ? "Account removed" : kind === "refresh" ? "Refreshing..." : "Done", kind === "delete" ? "success" : "info");
+            setTimeout(() => { loadAccounts(); loadUsers(true); }, kind === "refresh" ? 900 : 100);
+        } else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+}
+async function bulkPause(username, action){
+    try {
+        const d = await api("/api/admin/users/pause", {username, action});
+        if(d.status === "ok"){ toast(`${action === "pause" ? "Paused" : "Resumed"} ${d.changed} account(s) of ${username}`, "info"); loadAccounts(); }
+        else toast(d.error || "Failed", "error");
+    } catch(err){ if(err.message !== "auth") toast("Network error", "error"); }
+}
+function fillOwnerSelect(){
+    const sel = document.getElementById("acc-owner");
+    const owners = [...new Set(allAccounts.map(a => a.owner).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    const cur = sel.value;
+    sel.innerHTML = `<option value="">All owners</option>` + owners.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("");
+    sel.value = owners.includes(cur) ? cur : "";
+}
+async function loadAccounts(){
+    try {
+        const d = await api("/api/admin/accounts");
+        if(d.status !== "ok") return;
+        allAccounts = d.accounts;
+        document.getElementById("st-accounts").textContent = d.total;
+        document.getElementById("st-accounts-foot").textContent = `${d.running} running · ${d.paused} paused · ${d.limit_reached} at limit`;
+        document.getElementById("st-match").textContent = d.in_match;
+        document.getElementById("st-match-foot").textContent = `${d.admin_accounts} admin · ${d.user_accounts} users`;
+        fillOwnerSelect();
+        renderAccounts();
+    } catch(e){}
+}
+
+async function loadUsers(force=false){
+    // don't wipe a field the admin is typing in
+    if(!force && document.activeElement && document.activeElement.closest && document.activeElement.closest("#users-list")) return;
+    try {
+        const d = await api("/api/admin/users");
+        if(d.status !== "ok") return;
+        document.getElementById("admin-name").textContent = "Signed in as " + d.admin;
+        document.getElementById("st-users").textContent = d.users.length;
+        document.getElementById("st-users-foot").textContent = `${d.users.filter(u => u.accounts > 0).length} with accounts`;
+        document.getElementById("st-exp").textContent = "+" + Number(d.total_gained_exp).toLocaleString();
+        renderUsers(d.users);
+    } catch(e){}
+}
+loadUsers(true);
+loadAccounts();
+setInterval(loadUsers, 5000);
+setInterval(loadAccounts, 3000);
+</script>
+</body>
+</html>
